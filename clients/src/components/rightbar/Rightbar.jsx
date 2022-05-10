@@ -15,10 +15,6 @@ export default function Rightbar({user}) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [followed, setFollowed] = useState(false);
-  console.log('page:', user)
-  
-  console.log('able:', currentUser)
-  console.log('following:', followed)
 
   
   useEffect(() => {
