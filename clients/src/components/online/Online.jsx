@@ -1,15 +1,19 @@
 import "./online.css";
+import noavatar from '../../images/noavatar.png';
 
-export default function Online({user}) {
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
+export default function Online({follower}) {
 
   return (
     <li className="rightbarFriend">
       <div className="rightbarProfileImgContainer">
-        <img className="rightbarProfileImg" src={PF+user.profilePicture} alt="" />
+        {follower.profilePicture ? <img className="rightbarProfileImg" src={follower.profilePicture} alt="friendsImage" />
+         : <img className="rightbarProfileImg" src={noavatar} alt="friendsImage" />
+        }
+        
         <span className="rightbarOnline"></span>
       </div>
-      <span className="rightbarUsername">{user.username}</span>
+      <span className="rightbarUsername">{follower.username}</span>
     </li>
   );
 }

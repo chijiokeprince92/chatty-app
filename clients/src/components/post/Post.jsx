@@ -5,6 +5,7 @@ import axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import noavatar from '../../images/noavatar.png';
 
 export default function Post({ post }) {
   const [like, setLike] = useState(post.likes.length);
@@ -42,10 +43,10 @@ export default function Post({ post }) {
                 className="postProfileImg"
                 src={
                   user.profilePicture
-                    ? PF + user.profilePicture
-                    : PF + "person/noAvatar.png"
+                    ? user.profilePicture
+                    : noavatar
                 }
-                alt=""
+                alt="user profile"
               />
             </Link>
             <span className="postUsername">{user.username}</span>
@@ -57,7 +58,10 @@ export default function Post({ post }) {
         </div>
         <div className="postCenter">
           <span className="postText">{post?.desc}</span>
-          <img className="postImg" src={PF + post.img} alt="" />
+          
+          {!post.img ? <img className="postImg" style={{ display: "none" }} src="" alt="post" />
+           : <img className="postImg" src={post.img} alt="post" />
+          }
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
@@ -65,13 +69,13 @@ export default function Post({ post }) {
               className="likeIcon"
               src={`${PF}like.png`}
               onClick={likeHandler}
-              alt=""
+              alt="like"
             />
             <img
               className="likeIcon"
               src={`${PF}heart.png`}
               onClick={likeHandler}
-              alt=""
+              alt="love"
             />
             <span className="postLikeCounter">{like} people like it</span>
           </div>

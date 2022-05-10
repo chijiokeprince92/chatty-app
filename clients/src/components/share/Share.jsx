@@ -9,10 +9,11 @@ import {
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import noavatar from '../../images/noavatar.png'
+
 
 export default function Share() {
   const { user } = useContext(AuthContext);
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const desc = useRef();
   const [file, setFile] = useState(null);
 
@@ -24,14 +25,14 @@ export default function Share() {
     };
     if (file) {
       const data = new FormData();
-      const fileName = Date.now() + file.name;
-      data.append("name", fileName);
       data.append("file", file);
-      newPost.img = fileName;
-      console.log(newPost);
+      data.append("upload_preset","w8aqxx6i");
       try {
-        await axios.post("/upload", data);
-      } catch (err) {}
+        await axios.post("https://api.cloudinary.com/v1_1/prestige92/image/upload", data)
+        .then((response) => newPost.img = response.data.url)
+      } catch (err) {
+        console.log(err)
+      }
     }
     try {
       await axios.post("/posts", newPost);
@@ -47,8 +48,8 @@ export default function Share() {
             className="shareProfileImg"
             src={
               user.profilePicture
-                ? PF + user.profilePicture
-                : PF + "person/noAvatar.png"
+                ? noavatar
+                : noavatar
             }
             alt=""
           />
@@ -61,7 +62,7 @@ export default function Share() {
         <hr className="shareHr" />
         {file && (
           <div className="shareImgContainer">
-            <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
+            <img className="shareImg" style={{ height: '300px' }} src={URL.createObjectURL(file)} alt="" />
             <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
           </div>
         )}

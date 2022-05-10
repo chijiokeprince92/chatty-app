@@ -1,3 +1,9 @@
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from "../../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
+
+
 import "./sidebar.css";
 import {
   RssFeed,
@@ -10,10 +16,30 @@ import {
   Event,
   School,
 } from "@material-ui/icons";
-import { Users } from "../../dummyData";
+import { CircularProgress } from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CloseFriend from "../closeFriend/CloseFriend";
 
+
 export default function Sidebar() {
+  const { user } = useContext(AuthContext);
+  const [users, setUsers] = useState([]);
+  const userId = user._id;
+  const history = useNavigate();
+
+  useEffect(() => {
+    const fetchFollowers = async () => {
+      const res = await axios.get(`/users/friends/${userId}`);
+      setUsers(res.data);
+    };
+    fetchFollowers();
+  }, [userId]);
+
+  const logout = ()=> {
+    localStorage.clear();
+    history('/login');
+  }
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -54,13 +80,20 @@ export default function Sidebar() {
             <School className="sidebarIcon" />
             <span className="sidebarListItemText">Courses</span>
           </li>
+            <li className="sidebarListItem" onClick={logout}>
+            <ExitToAppIcon className="sidebarIcon" />
+            <span className="sidebarListItemText">Logout</span>
+          </li>
         </ul>
         <button className="sidebarButton">Show More</button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
-          {Users.map((u) => (
-            <CloseFriend key={u.id} user={u} />
-          ))}
+        <span className="sidebarListItemText"><b>Following</b></span><br/><br/>
+          {users?.length === 0 ? <li>You are not following anyone <CircularProgress style={{fontSize: 20}}/></li> : users.map((use) => 
+            <Link to={`/profile/${use.username}`} style={{textDecoration: "none"}}>
+              <CloseFriend key={use._id} use={use} />
+            </Link>
+          )}
         </ul>
       </div>
     </div>

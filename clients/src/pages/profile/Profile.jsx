@@ -6,9 +6,11 @@ import Rightbar from "../../components/rightbar/Rightbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
+import coverphoto from '../../images/coverphoto.jpg';
+import noavatar from '../../images/noavatar.png';
+
 
 export default function Profile() {
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState({});
   const username = useParams().username;
 
@@ -32,19 +34,19 @@ export default function Profile() {
                 className="profileCoverImg"
                 src={
                   user.coverPicture
-                    ? PF + user.coverPicture
-                    : PF + "person/noCover.png"
+                    ? coverphoto
+                    : coverphoto
                 }
-                alt=""
+                alt="CoverImage"
               />
               <img
                 className="profileUserImg"
                 src={
                   user.profilePicture
-                    ? PF + user.profilePicture
-                    : PF + "person/noAvatar.png"
+                    ? noavatar
+                    : noavatar
                 }
-                alt=""
+                alt="profileImage"
               />
             </div>
             <div className="profileInfo">

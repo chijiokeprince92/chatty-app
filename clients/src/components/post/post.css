@@ -63,8 +63,13 @@
   .likeIcon{
       width: 24px;
       height: 24px;
+      transition: transform .2s; /* Animation */
       margin-right: 5px;
       cursor: pointer;
+  }
+
+  .likeIcon:hover {
+    transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
   }
   
   .postLikeCounter{

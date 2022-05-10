@@ -3,15 +3,15 @@ import { Search, Person, Chat, Notifications } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import noavatar from '../../images/noavatar.png'
 
 export default function Topbar() {
   const { user } = useContext(AuthContext);
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">Lamasocial</span>
+          <span className="logo">NaijaConnect</span>
         </Link>
       </div>
       <div className="topbarCenter">
@@ -46,10 +46,10 @@ export default function Topbar() {
           <img
             src={
               user.profilePicture
-                ? PF + user.profilePicture
-                : PF + "person/noAvatar.png"
+                ? noavatar
+                : noavatar
             }
-            alt=""
+            alt="profile"
             className="topbarImg"
           />
         </Link>
