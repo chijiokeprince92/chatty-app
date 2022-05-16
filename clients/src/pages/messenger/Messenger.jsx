@@ -8,7 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-export default function Messenger() {
+const Messenger = () => {
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -157,3 +157,5 @@ export default function Messenger() {
     </>
   );
 }
+
+export default Messenger;

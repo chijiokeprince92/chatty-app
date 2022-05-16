@@ -12,6 +12,7 @@ import authRoute from "./routes/auth.js";
 import postRoute from "./routes/posts.js";
 import conversationRoute from "./routes/conversations.js";
 import messageRoute from "./routes/messages.js";
+import pinRoute from "./routes/pin.js";
 import path from "path";
 import {fileURLToPath} from 'url';
 
@@ -22,12 +23,6 @@ const __dirname = path.dirname(__filename);
 // console.log('directory-name 👉️', __dirname);
 
 dotenv.config();
-
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 
 mongoose.connect(
@@ -49,26 +44,13 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("common"));
 
-app.post('/api/upload', async (req, res) => {
-  try {
-      const fileStr = req.body.data;
-      const uploadResponse = await cloudinary.uploader.upload(fileStr, {
-          upload_preset: 'social_app',
-      });
-      console.log('we are here: ',uploadResponse);
-      res.json({ msg: 'yaya' });
-  } catch (err) {
-      console.log('Didnt upload: ',err);
-      res.status(500).json({ err: 'Something went wrong' });
-  }
-});
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
-
+app.use("/api/pins", pinRoute);
 
 
 app.listen(8800, () => {
