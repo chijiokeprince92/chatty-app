@@ -102,8 +102,8 @@ export default function Sidebar() {
         <ul className="sidebarFriendList">
         <span className="sidebarListItemText"><b>Following</b></span><br/><br/>
           {users?.length === 0 ? <li>You are not following anyone <CircularProgress style={{fontSize: 20}}/></li> : users.map((use) => 
-            <Link to={`/profile/${use.username}`} style={{textDecoration: "none"}}>
-              <CloseFriend key={use._id} use={use} />
+            <Link key={use._id} to={`/profile/${use.username}`} style={{textDecoration: "none"}}>
+              <CloseFriend use={use} />
             </Link>
           )}
         </ul>

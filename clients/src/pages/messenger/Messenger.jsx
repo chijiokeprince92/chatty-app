@@ -5,6 +5,7 @@ import Message from "../../components/message/Message";
 import ChatOnline from "../../components/chatOnline/ChatOnline";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import {Send} from '@material-ui/icons';
 import axios from "axios";
 import { io } from "socket.io-client";
 
@@ -108,7 +109,7 @@ const Messenger = () => {
           <div className="chatMenuWrapper">
             <input placeholder="Search for friends" className="chatMenuInput" />
             {conversations.map((c) => (
-              <div onClick={() => setCurrentChat(c)}>
+              <div key={c._id} onClick={() => setCurrentChat(c)}>
                 <Conversation conversation={c} currentUser={user} />
               </div>
             ))}
@@ -120,7 +121,7 @@ const Messenger = () => {
               <>
                 <div className="chatBoxTop">
                   {messages.map((m) => (
-                    <div ref={scrollRef}>
+                    <div key={m._id} ref={scrollRef}>
                       <Message message={m} own={m.sender === user._id} />
                     </div>
                   ))}
@@ -128,12 +129,13 @@ const Messenger = () => {
                 <div className="chatBoxBottom">
                   <textarea
                     className="chatMessageInput"
-                    placeholder="write something..."
+                    placeholder="Type a message..."
                     onChange={(e) => setNewMessage(e.target.value)}
                     value={newMessage}
                   ></textarea>
-                  <button className="chatSubmitButton" onClick={handleSubmit}>
-                    Send
+                  <button class="custom-btn btn-12" onClick={handleSubmit}>
+                    <span><Send/></span>
+                    <span><Send/></span>
                   </button>
                 </div>
               </>

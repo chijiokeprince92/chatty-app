@@ -2,10 +2,10 @@ import "./post.css";
 import { MoreVert } from "@material-ui/icons";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import noavatar from '../../images/noavatar.png';
+import moment from 'moment';
 
 export default function Post({ post }) {
   const [like, setLike] = useState(post.likes.length);
@@ -18,6 +18,7 @@ export default function Post({ post }) {
     setIsLiked(post.likes.includes(currentUser._id));
   }, [currentUser._id, post.likes]);
 
+  
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`/users?userId=${post.userId}`);
@@ -50,7 +51,7 @@ export default function Post({ post }) {
               />
             </Link>
             <span className="postUsername">{user.username}</span>
-            <span className="postDate">{format(post.createdAt)}</span>
+            <span className="postDate">{moment(post.createdAt).fromNow()}</span>
           </div>
           <div className="postTopRight">
             <MoreVert />
@@ -65,12 +66,6 @@ export default function Post({ post }) {
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img
-              className="likeIcon"
-              src={`${PF}like.png`}
-              onClick={likeHandler}
-              alt="like"
-            />
             <img
               className="likeIcon"
               src={`${PF}heart.png`}

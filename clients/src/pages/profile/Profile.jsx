@@ -10,7 +10,7 @@ import coverphoto from '../../images/coverphoto.jpg';
 import noavatar from '../../images/noavatar.png';
 
 
-export default function Profile() {
+const Profile = () => {
   const [user, setUser] = useState({});
   const username = useParams().username;
 
@@ -63,3 +63,5 @@ export default function Profile() {
     </>
   );
 }
+
+export default Profile;

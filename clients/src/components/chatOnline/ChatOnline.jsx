@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./chatOnline.css";
+import noavatar from '../../images/noavatar.png';
 
-export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
+
+const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
   const [friends, setFriends] = useState([]);
   const [onlineFriends, setOnlineFriends] = useState([]);
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   useEffect(() => {
     const getFriends = async () => {
@@ -34,14 +35,14 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
   return (
     <div className="chatOnline">
       {onlineFriends.map((o) => (
-        <div className="chatOnlineFriend" onClick={() => handleClick(o)}>
+        <div key={o._id} className="chatOnlineFriend" onClick={() => handleClick(o)}>
           <div className="chatOnlineImgContainer">
             <img
               className="chatOnlineImg"
               src={
                 o?.profilePicture
-                  ? PF + o.profilePicture
-                  : PF + "person/noAvatar.png"
+                  ? o.profilePicture
+                  : noavatar
               }
               alt=""
             />
@@ -53,3 +54,5 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
     </div>
   );
 }
+
+export default ChatOnline;

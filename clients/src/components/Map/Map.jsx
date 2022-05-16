@@ -3,7 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import Map, {NavigationControl, Marker, Popup}  from "react-map-gl";
 import { Room, Star} from "@material-ui/icons";
 import axios from 'axios';
-import { format } from 'timeago.js'
+import moment from 'moment';
 import './map.css';
 
 
@@ -122,7 +122,7 @@ const Maps = () => {
                   <span className="username">
                     Created by <b>{p.username}</b>
                   </span>
-                  <span className="date">{format(p.createdAt)}</span>
+                  <span className="date">{moment(p.createdAt).fromNow()}</span>
                 </div>
               </Popup>
             )}

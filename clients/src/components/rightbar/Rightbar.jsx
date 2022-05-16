@@ -2,19 +2,20 @@ import "./rightbar.css";
 import Online from "../online/Online";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { Add, Remove } from "@material-ui/icons";
+import { Add, Remove, WhatsApp } from "@material-ui/icons";
 import couples from "../../images/couplehands.jpg";
 import birthday from "../../images/birthdayphoto.jpg";
 import { CircularProgress } from '@material-ui/core';
 import noavatar from '../../images/noavatar.png';
 
 
-export default function Rightbar({user}) {
+const Rightbar = ({user}) => {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [followed, setFollowed] = useState(false);
+  const history = useNavigate();
 
   
   useEffect(() => {
@@ -48,6 +49,24 @@ export default function Rightbar({user}) {
     }
   };
 
+  const messageUser = async () => {
+  
+      try {
+        const res = await axios.get(`/conversations/find/${currentUser._id}/${user._id}`);
+        if (res.data === null) {
+          const convo = {
+            senderId: currentUser._id,
+            receiverId: user._id
+          }
+          const newConvo = await axios.post('/conversations/', convo);
+          console.log(newConvo)
+        } 
+      } catch (err) {
+        console.log(err);
+      }
+      history('/messenger');
+  }
+
   const HomeRightbar = () => {
     return (
       <>
@@ -60,10 +79,10 @@ export default function Rightbar({user}) {
         <img className="rightbarAd" src={couples} alt="couplesImage" />
         <h4 className="rightbarTitle">Online Friends</h4>
         <ul className="rightbarFriendList">
-        {currentUser.followers?.length === 0 ? <li>You are not followed by anyone <CircularProgress style={{fontSize: 20}}/></li>
-         : currentUser.followers.map((friend) => 
-            <Link to={`/profile/${friend.username}`} style={{textDecoration: "none"}}>
-              <Online key={friend._id} follower={friend} />
+        {currentUser?.followers?.length === 0 ? <li>You are not followed by anyone <CircularProgress style={{fontSize: 20}}/></li>
+         : currentUser?.followers.map((friend) => 
+            <Link key={friend._id} to={`/profile/${friend.username}`} style={{textDecoration: "none"}}>
+              <Online follower={friend} />
             </Link>
           )}
         </ul>
@@ -75,10 +94,15 @@ export default function Rightbar({user}) {
     return (
       <>
         {user.username !== currentUser.username && (
+          <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
           <button className="rightbarFollowButton" onClick={handleClick}>
             {followed ? "Unfollow" : "Follow"}
             {followed ? <Remove /> : <Add />}
           </button>
+          <button className="rightbarFollowButton" onClick={messageUser}>
+            <WhatsApp/>
+          </button>
+          </div>
         )}
         <h4 className="rightbarTitle">{user.username}'s information</h4>
         <div className="rightbarInfo">
@@ -134,3 +158,5 @@ export default function Rightbar({user}) {
     </div>
   );
 }
+
+export default Rightbar;
